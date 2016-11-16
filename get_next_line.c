@@ -6,7 +6,7 @@
 /*   By: jcarmona <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/13 14:46:48 by jcarmona          #+#    #+#             */
-/*   Updated: 2016/11/16 13:16:46 by jcarmona         ###   ########.fr       */
+/*   Updated: 2016/11/16 13:38:53 by jcarmona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,26 @@ int		get_next_line(const int fd, char **line)
 	if (result.content)
 	{
 		node->content = result.content;
-	//	printf("NODE: %s\n", node->content);
+		if (nl_check((char**)&node->content, &result))
+		{
+			while (tmp)
+			{
+					printf("%s", tmp->content);
+					//free(tmp->content);
+					copy = tmp;
+					tmp = tmp->next;
+					//free(copy);
+			}
+			//free(tmp);
+			return (1);
+		}
+		//printf("NODE: %s\n", node->content);
 		node->next = malloc(sizeof(t_list));
 		node->next->next = 0;
 		node = node->next;
 
 	}
-	while ((len = read(fd, (node->content = (ft_strnew(1))), 1)))
+	while ((len = read(fd, (node->content = (ft_strnew(7))), 7)))
 	{
 		if (nl_check((char**)&node->content, &result))
 		{
@@ -126,6 +139,12 @@ int		main(int argc, char **argv)
 		get_next_line(fd, &ptr);
 		printf("\n");
 		get_next_line(fd, &ptr);
+		printf("\n");
+		get_next_line(fd, &ptr);
+		//printf("\n");
+		//get_next_line(fd, &ptr);
+		//printf("\n"); 
+		//get_next_line(fd, &ptr);
 		close(fd);
 	}
 	else
