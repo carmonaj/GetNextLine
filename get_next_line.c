@@ -6,15 +6,10 @@
 /*   By: jcarmona <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/13 14:46:48 by jcarmona          #+#    #+#             */
-/*   Updated: 2016/11/17 19:21:21 by jcarmona         ###   ########.fr       */
+/*   Updated: 2016/11/17 19:25:11 by jcarmona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <fcntl.h>
-#include <strings.h>
-#include <unistd.h>
-#include "libft.h"
 #include "get_next_line.h"
 
 char	*build_str(t_list *node)
