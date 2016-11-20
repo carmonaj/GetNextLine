@@ -6,7 +6,7 @@
 /*   By: jcarmona <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/13 14:46:48 by jcarmona          #+#    #+#             */
-/*   Updated: 2016/11/18 18:46:20 by jcarmona         ###   ########.fr       */
+/*   Updated: 2016/11/20 05:54:11 by jcarmona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 char	*build_str(t_list *node)
 {
-	t_list	*t_tmp;
 	char	*tmp;
 	char	*s;
 
@@ -32,75 +31,128 @@ char	*build_str(t_list *node)
 				s = ft_strjoin(node->content, s);
 			}
 		}
-		t_tmp = node;
 		node = node->next;
 	}
 	return (s);
 }
 
-int		nl_check(char **s, t_list *result, int fd)
+int		nl_check(char **s, t_list *result)
 {
 	char	*cpy;
 	int		i;
 
 	i = 0;
+
 	if (ft_strchr(*s, '\n'))
 	{
 		cpy = *s;
 		while ((*s)[i] != '\n')
 			i++;
 		*s = ft_strsub(*s, 0, i);
-		if (cpy[++i])
-			result->content = ft_strdup(&cpy[i]);
+		if ((ft_strlen(cpy += i+1)) > 0)
+		{
+			//result->content = ft_strdup(&cpy[i]);
+			result->content = ft_strdup(cpy);
+			//printf("\n[%s]\n", result->content);
+		}
 		else
 		{
 			result->content = 0;
-			if (fd == 0)
-				return (0);
+			//printf("its empty\n");
 		}
 		return (1);
 	}
 	return (0);
 }
 
+
 int		get_next_line(const int fd, char **line)
 {
 	static	t_list	result;
+	char			buff[BUFF_SIZE+1];
 	t_list			*node;
 	int				ret;
 
-	if (fd < 0 || !line) 
-		return (-1);
+	ft_memset(buff, 0, BUFF_SIZE+1);
 
-	node = ft_lstnew(ft_strnew(BUFF_SIZE), BUFF_SIZE);
+	/* if fd is negative or line pointer is null */
+	if (fd < 0 || !line) 
+	{
+		//printf("error\n");
+		return (-1);
+	}
+
+	/* create a new node with string of buff_size*/
+	node = ft_lstnew(0, 0);
+
+	/* if string exists already */
 	if (result.content)
 	{
+		//printf("<<[%s]>>", result.content);
+		//printf("<<%s>>", result.content);
+		/* assign the string to the new node */
 		node->content = ft_strdup(result.content);
-		if (nl_check((char**)&node->content, &result, fd))
+		result.content = 0;
+		/* check if there is a newline in this string */
+		if (nl_check((char**)&node->content, &result))
+
+			/* if there is, build string & return 1 */
 			if ((*line = build_str(node)))
+			{
+//				printf("(c)");
 				return (1);
-		ft_lstadd(&node, ft_lstnew(ft_strnew(BUFF_SIZE), BUFF_SIZE));
+			}
+		/* if there is no newline, create another node and add to the beginning of list */
+		//ft_lstadd(&node, ft_lstnew(ft_strnew(BUFF_SIZE), BUFF_SIZE));
+		ft_lstadd(&node, ft_lstnew(0, 0));
 	}
-	while ((ret = read(fd, node->content, BUFF_SIZE)) > 0)
+
+	/* read and allocate a string into the new node */
+	while ((ret = read(fd, buff, BUFF_SIZE)) > 0)
 	{
-		if (nl_check((char**)&node->content, &result, fd))
+		node->content = ft_strdup(buff);
+		ft_memset(buff, 0, BUFF_SIZE);
+		/*if (ret < BUFF_SIZE)
+		{
+			*line = build_str(node);
+			return (1);
+		}*/
+
+		/* check if there is a newline in this string */
+		if (nl_check((char**)&node->content, &result) || ret < BUFF_SIZE)
+
+			/* if there is, build string & return 1 */
 			if ((*line = build_str(node)))
+			{
+//				printf("(b)");
+				//printf("[[LINE:%s]]\n", *line);
 				return (1);
-		ft_lstadd(&node, ft_lstnew(ft_strnew(BUFF_SIZE), BUFF_SIZE));
+			}
+
+		/* if there is no newline, create another node and add to the beginning of list */
+		//ft_lstadd(&node, ft_lstnew(ft_strnew(BUFF_SIZE), BUFF_SIZE));
+		ft_lstadd(&node, ft_lstnew(0, 0)); 
 	}
+
+	/* if you can't read from file/ if invalid */
 	if (ret < 0)
+	{
+		//printf("error\n");
 		return (-1);
+	}
 
 	if (node->next)
 	{
+		//printf("LOL\n");
 		*line = build_str(node);
-		if (result.content)
-			result.content = 0;
-		if (node->next)
-			node->next = 0;
+//		printf("(a)");
 		return (1);
+	/*	printf("[result.content:%s]", result.content);
+		result.content = 0;
+		printf("<foobar>");
+		return (0);*/
 	}
-	else
-		*line = 0;
+	
+//	printf("(d)");
 	return (0);
 }
