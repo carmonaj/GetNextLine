@@ -6,7 +6,7 @@
 /*   By: jcarmona <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/13 14:46:48 by jcarmona          #+#    #+#             */
-/*   Updated: 2016/11/20 18:39:45 by jcarmona         ###   ########.fr       */
+/*   Updated: 2016/11/20 21:00:51 by jcarmona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,16 @@ int		nl_check(char **s, t_list *result)
 		cpy = *s;
 		while ((*s)[i] != '\n')
 			i++;
+
+		//printf("[(s):%s]\n", *s);
 		*s = ft_strsub(*s, 0, i);
+
+		//printf("[(cpy):%s]\n", cpy);
+		//printf("[(s):%s]\n", *s);
+		
 		if ((ft_strlen(cpy += i+1)) > 0)
 		{
+			//printf("[(cpy):%s]\n", cpy);
 			result->content = ft_strdup(cpy);
 	//		printf("[%s:%zu]\n", *s, ft_strlen(*s));
 		}
@@ -87,7 +94,6 @@ int		nl_check(char **s, t_list *result)
 			result->content = 0;
 		free(cpy2);
 		return (1);
-		
 	}
 	return (0);
 }
@@ -98,7 +104,7 @@ int		get_next_line(const int fd, char **line)
 	static	t_list	result;
 	char			buff[BUFF_SIZE+1];
 	t_list			*node;
-	//char			*cpy;
+	char			*cpy = 0;
 	char			*cpy2;
 	int				ret;
 
@@ -116,15 +122,22 @@ int		get_next_line(const int fd, char **line)
 	{
 		/* assign the string to the new node */
 		node->content = ft_strdup(result.content);
+		//printf("[%s:%zu]\n", node->content, ft_strlen(node->content));
 		free(result.content);
 		result.content = 0;
 
+		cpy = node->content;
 		/* check if there is a newline in this string */
 		if (nl_check((char**)&node->content, &result))
+		{
+			cpy = node->content;
 			/* if there is, build string & return 1 */
 			if ((*line = build_str(node)))
+			{
+				free(cpy);
 				return (1);
-
+			}
+		}
 		/* if there is no newline, create another node and add to the beginning of list */
 		ft_lstadd(&node, ft_lstnew(0, 0));
 	}
@@ -159,6 +172,7 @@ int		get_next_line(const int fd, char **line)
 	if (node->next)
 	{
 		*line = build_str(node);
+		free(cpy);
 		return (1);
 	}
 
