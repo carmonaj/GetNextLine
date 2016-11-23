@@ -6,7 +6,7 @@
 /*   By: jcarmona <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/13 14:46:48 by jcarmona          #+#    #+#             */
-/*   Updated: 2016/11/20 21:00:51 by jcarmona         ###   ########.fr       */
+/*   Updated: 2016/11/22 17:01:19 by jcarmona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ char	*build_str(t_list *node)
 	t_list	*t_tmp;
 	char	*tmp;
 	char	*s;
+	char	*cpy;
 
 	s = 0;
 	while (node)
@@ -29,7 +30,9 @@ char	*build_str(t_list *node)
 			else
 			{
 				tmp = s;
+				cpy = node->content;
 				s = ft_strjoin(node->content, s);
+				free(node->content);
 				free(tmp);
 			}
 		}
@@ -37,6 +40,7 @@ char	*build_str(t_list *node)
 		node = node->next;
 		free(t_tmp);
 	}
+
 	return (s);
 }
 
@@ -68,6 +72,7 @@ int		nl_check(char **s, t_list *result)
 {
 	char	*cpy;
 	char	*cpy2;
+	char	*cpy3;
 	int		i;
 
 	i = 0;
@@ -87,7 +92,9 @@ int		nl_check(char **s, t_list *result)
 		if ((ft_strlen(cpy += i+1)) > 0)
 		{
 			//printf("[(cpy):%s]\n", cpy);
+			cpy3 = result->content;
 			result->content = ft_strdup(cpy);
+			free(cpy3);
 	//		printf("[%s:%zu]\n", *s, ft_strlen(*s));
 		}
 		else
@@ -109,6 +116,7 @@ int		get_next_line(const int fd, char **line)
 	int				ret;
 
 	ft_memset(buff, 0, BUFF_SIZE+1);
+	ret = 0;
 
 	/* if fd is negative or line pointer is null */
 	if (fd < 0 || !line) 
@@ -126,7 +134,7 @@ int		get_next_line(const int fd, char **line)
 		free(result.content);
 		result.content = 0;
 
-		cpy = node->content;
+		//cpy = node->content;
 		/* check if there is a newline in this string */
 		if (nl_check((char**)&node->content, &result))
 		{
@@ -149,18 +157,20 @@ int		get_next_line(const int fd, char **line)
 		ft_memset(buff, 0, BUFF_SIZE+1);
 
 		/* check if there is a newline in this string */
+		//cpy2 = node->content;
 		if (nl_check((char**)&node->content, &result) || ret < BUFF_SIZE)
 		{
 			cpy2 = node->content;
+
 			//printf("[%s:%zu]\n", node->content, ft_strlen(node->content));
 			/* if there is, build string & return 1 */
+			
 			if ((*line = build_str(node)))
 			{
 				free(cpy2);
-				return (1);
+				return(1);		
 			}
 		}
-
 		/* if there is no newline, create another node and add to the beginning of list */
 		ft_lstadd(&node, ft_lstnew(0, 0)); 
 	}
@@ -168,6 +178,12 @@ int		get_next_line(const int fd, char **line)
 	/* if you can't read from file/ if invalid */
 	if (ret < 0)
 			return (-1);
+	
+	/*if (ret < BUFF_SIZE || ret == 0)
+	{
+		free(result.content);
+		result.content = 0;
+	}*/
 
 	if (node->next)
 	{
