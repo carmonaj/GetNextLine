@@ -1,26 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcarmona <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/13 14:47:02 by jcarmona          #+#    #+#             */
-/*   Updated: 2016/11/22 23:40:34 by jcarmona         ###   ########.fr       */
+/*   Created: 2016/09/25 14:24:29 by jcarmona          #+#    #+#             */
+/*   Updated: 2016/10/06 22:47:21 by jcarmona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-# define BUFF_SIZE 1
-# include "libft/includes/libft.h"
+#include "libft.h"
 
-typedef struct	s_data
+char	*ft_strdup(const char *s1)
 {
-	char		buff[BUFF_SIZE + 1];
-	int			ret;
-}				t_data;
+	char	*dup;
+	int		i;
 
-int				get_next_line(const int fd, char **line);
-
-#endif
+	i = 0;
+	if (!(dup = ft_strnew(ft_strlen(s1))))
+		return (NULL);
+	while (s1[i])
+	{
+		dup[i] = s1[i];
+		i++;
+	}
+	return (dup);
+}

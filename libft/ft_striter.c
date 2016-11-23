@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_striter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcarmona <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/13 14:47:02 by jcarmona          #+#    #+#             */
-/*   Updated: 2016/11/22 23:40:34 by jcarmona         ###   ########.fr       */
+/*   Created: 2016/09/27 12:29:26 by jcarmona          #+#    #+#             */
+/*   Updated: 2016/10/07 15:05:53 by jcarmona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-# define BUFF_SIZE 1
-# include "libft/includes/libft.h"
-
-typedef struct	s_data
+void	ft_striter(char *s, void (*f)(char *))
 {
-	char		buff[BUFF_SIZE + 1];
-	int			ret;
-}				t_data;
-
-int				get_next_line(const int fd, char **line);
-
-#endif
+	if (s && f)
+	{
+		while (*s)
+		{
+			f(s);
+			s++;
+		}
+	}
+	return ;
+}

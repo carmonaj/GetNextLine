@@ -1,26 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcarmona <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/13 14:47:02 by jcarmona          #+#    #+#             */
-/*   Updated: 2016/11/22 23:40:34 by jcarmona         ###   ########.fr       */
+/*   Created: 2016/09/23 21:18:49 by jcarmona          #+#    #+#             */
+/*   Updated: 2016/09/26 23:41:17 by jcarmona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-# define BUFF_SIZE 1
-# include "libft/includes/libft.h"
+#include "libft.h"
 
-typedef struct	s_data
+char	*ft_strstr(const char *big, const char *little)
 {
-	char		buff[BUFF_SIZE + 1];
-	int			ret;
-}				t_data;
+	int i;
+	int j;
+	int k;
 
-int				get_next_line(const int fd, char **line);
-
-#endif
+	j = 0;
+	i = 0;
+	k = 0;
+	if (strlen(little) == 0)
+		return ((char*)big);
+	while (big[i])
+	{
+		j = 0;
+		k = i;
+		while (little && little[j] == big[i])
+		{
+			if ((size_t)j == (ft_strlen(little) - 1))
+				return ((char *)&big[i - j]);
+			i++;
+			j++;
+		}
+		i = k;
+		i++;
+	}
+	return (NULL);
+}

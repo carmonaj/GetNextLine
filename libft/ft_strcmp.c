@@ -1,26 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcarmona <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/13 14:47:02 by jcarmona          #+#    #+#             */
-/*   Updated: 2016/11/22 23:40:34 by jcarmona         ###   ########.fr       */
+/*   Created: 2016/09/21 15:29:58 by jcarmona          #+#    #+#             */
+/*   Updated: 2016/10/05 16:02:04 by jcarmona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-# define BUFF_SIZE 1
-# include "libft/includes/libft.h"
+#include "libft.h"
 
-typedef struct	s_data
+int		ft_strcmp(const char *s1, const char *s2)
 {
-	char		buff[BUFF_SIZE + 1];
-	int			ret;
-}				t_data;
+	int				i;
+	unsigned char	*s1p;
+	unsigned char	*s2p;
 
-int				get_next_line(const int fd, char **line);
-
-#endif
+	s1p = (unsigned char*)s1;
+	s2p = (unsigned char*)s2;
+	i = 0;
+	if (ft_strlen((const char*)s1) == 0)
+		return (s1p[i] - s2p[i]);
+	while (s1p[i] && s2p[i])
+	{
+		if (s1p[i] == s2p[i])
+			i++;
+		else
+			return ((s1p[i] - s2p[i]));
+	}
+	return ((s1p[i] - s2p[i]));
+}

@@ -1,26 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_is_prime.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcarmona <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/13 14:47:02 by jcarmona          #+#    #+#             */
-/*   Updated: 2016/11/22 23:40:34 by jcarmona         ###   ########.fr       */
+/*   Created: 2016/08/13 22:51:54 by jcarmona          #+#    #+#             */
+/*   Updated: 2016/08/13 22:52:00 by jcarmona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-# define BUFF_SIZE 1
-# include "libft/includes/libft.h"
-
-typedef struct	s_data
+int		ft_is_prime(int nb)
 {
-	char		buff[BUFF_SIZE + 1];
-	int			ret;
-}				t_data;
+	int count;
+	int nbr1;
 
-int				get_next_line(const int fd, char **line);
-
-#endif
+	count = 0;
+	nbr1 = 1;
+	while (nbr1 <= nb)
+	{
+		if (nb % nbr1 == 0)
+			count++;
+		nbr1++;
+	}
+	if (count == 2)
+		return (1);
+	else
+		return (0);
+}

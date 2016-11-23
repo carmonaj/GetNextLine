@@ -1,26 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcarmona <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/13 14:47:02 by jcarmona          #+#    #+#             */
-/*   Updated: 2016/11/22 23:40:34 by jcarmona         ###   ########.fr       */
+/*   Created: 2016/09/27 18:24:33 by jcarmona          #+#    #+#             */
+/*   Updated: 2016/10/07 15:11:44 by jcarmona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-# define BUFF_SIZE 1
-# include "libft/includes/libft.h"
+#include "libft.h"
 
-typedef struct	s_data
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	char		buff[BUFF_SIZE + 1];
-	int			ret;
-}				t_data;
+	unsigned int	i;
+	char			*fresh;
 
-int				get_next_line(const int fd, char **line);
-
-#endif
+	i = 0;
+	fresh = NULL;
+	if (s)
+	{
+		fresh = ft_strnew(ft_strlen(s));
+		if (fresh == NULL)
+			return (NULL);
+		while (s[i])
+		{
+			fresh[i] = (*f)(i, s[i]);
+			i++;
+		}
+		return (fresh);
+	}
+	return (NULL);
+}

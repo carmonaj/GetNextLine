@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_memccpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcarmona <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/13 14:47:02 by jcarmona          #+#    #+#             */
-/*   Updated: 2016/11/22 23:40:34 by jcarmona         ###   ########.fr       */
+/*   Created: 2016/09/25 11:42:30 by jcarmona          #+#    #+#             */
+/*   Updated: 2016/10/07 15:01:57 by jcarmona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-# define BUFF_SIZE 1
-# include "libft/includes/libft.h"
+#include "libft.h"
 
-typedef struct	s_data
+void	*ft_memccpy(void *dst, const void *src, int c, size_t n)
 {
-	char		buff[BUFF_SIZE + 1];
-	int			ret;
-}				t_data;
+	size_t			i;
+	unsigned char	*d;
+	unsigned char	*s;
 
-int				get_next_line(const int fd, char **line);
-
-#endif
+	s = (unsigned char*)src;
+	d = (unsigned char*)dst;
+	i = 0;
+	while (i < n)
+	{
+		d[i] = s[i];
+		if (s[i] == (unsigned char)c)
+			return (&d[i + 1]);
+		i++;
+	}
+	return (NULL);
+}
